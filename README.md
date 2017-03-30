@@ -34,6 +34,8 @@ The returned `PropertyPointer` object exposes the following properties and metho
 
 * `isRoot()` - Returns `true` if the pointer is a root pointer. A root pointer corresponds to an empty string and points to the record as a whole.
 
+* `isChildOf(otherPtr)` - Returns `true` if the pointer points to a child location of the specified other pointer (that is the other pointer is a "proper prefix" of this pointer). For example, will always return `true` if the other pointer is a root pointer and this one is not.
+
 * `propDesc` - `PropertyDescriptor` of the property, at which the pointer points. For an array or map element pointer, the property descriptor of the array or map property but the pointer object's `collectionElement` flag is set to indicate that it is for an element and not the whole array or map property. For the root pointer this property is `null`.
 
 * `propPath` - Property path corresponding to `propDesc`, or `null` for the root pointer.
@@ -46,6 +48,8 @@ The returned `PropertyPointer` object exposes the following properties and metho
 
 * `replaceValue(record, value)` - Like `addValue()`, but replaces an existing array element instead of inserting the value in front of it.
 
-* `deleteValue(record)` - Erase the property, at which the pointer points in the given object. If the pointer points at an array element, the element is deleted from the array and the following elements, if any, are shifted left into its place.
+* `removeValue(record)` - Erase the property, at which the pointer points in the given object. If the pointer points at an array element, the element is deleted from the array and the following elements, if any, are shifted left into its place.
 
-Note, that `addValue()`, `replaceValue()` and `deleteValue()` methods are not allowed on a root pointer. Also, `addValue()` and `replaceValue()` methods cannot take `undefined` for the value to set and `null` is not allowed for nested object array and map elements. Beyond that, the methods make no checks for the value type whether it matches the property or not.
+* `toString()` - Get string representation of the pointer as specified in RFC 6901.
+
+Note, that `addValue()`, `replaceValue()` and `removeValue()` methods are not allowed on a root pointer. Also, `addValue()` and `replaceValue()` methods cannot take `undefined` for the value to set and `null` is not allowed for nested object array and map elements. Beyond that, the methods make no checks for the value type whether it matches the property or not.

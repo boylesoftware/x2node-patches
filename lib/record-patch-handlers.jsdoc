@@ -1,0 +1,58 @@
+/**
+ * Interface for record patch handlers objects that can be invoked when patch
+ * operations are applied to a record. Each method is optional and even if
+ * present is called only if the patch detects that the operation changes the
+ * current record.
+ *
+ * @interface RecordPatchHandlers
+ * @memberof module:x2node-patch
+ */
+/**
+ * Called when an "add" operation is applied.
+ *
+ * @function module:x2node-patch.RecordPatchHandlers#onAdd
+ * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
+ * @param {*} value The value added (may be <code>null</code> but never
+ * <code>undefined</code>).
+ */
+/**
+ * Called when a "remove" operation is applied.
+ *
+ * @function module:x2node-patch.RecordPatchHandlers#onRemove
+ * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
+ */
+/**
+ * Called when a "replace" operation is applied.
+ *
+ * @function module:x2node-patch.RecordPatchHandlers#onReplace
+ * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
+ * @param {*} value The new value (may be <code>null</code> but never
+ * <code>undefined</code>).
+ */
+/**
+ * Called when a "move" operation is applied.
+ *
+ * @function module:x2node-patch.RecordPatchHandlers#onMove
+ * @param {module:x2node-patch~PropertyPointer} pathPtr Target pointer.
+ * @param {module:x2node-patch~PropertyPointer} fromPtr "From" pointer.
+ * @param {*} value The value moved (may be <code>null</code> but never
+ * <code>undefined</code>).
+ */
+/**
+ * Called when a "copy" operation is applied.
+ *
+ * @function module:x2node-patch.RecordPatchHandlers#onCopy
+ * @param {module:x2node-patch~PropertyPointer} pathPtr Target pointer.
+ * @param {module:x2node-patch~PropertyPointer} fromPtr "From" pointer.
+ * @param {*} value The value copied (may be <code>null</code> but never
+ * <code>undefined</code>).
+ */
+/**
+ * Called when a "test" operation is applied.
+ *
+ * @function module:x2node-patch.RecordPatchHandlers#onTest
+ * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
+ * @param {*} value The value tested (may be <code>null</code> but never
+ * <code>undefined</code>).
+ * @param {boolean} passed <code>true</code> if the test operation passed.
+ */
