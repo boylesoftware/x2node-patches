@@ -43,7 +43,15 @@ The returned `PropertyPointer` object exposes the following properties and metho
 
 * `collectionElement` - `true` if the pointer is for an array or map property element.
 
-* `getValue(record)` - Given a record, gets value of the property, at which the pointer points. Returns `null` if no value. For absent array and map elements returns `undefined`. Throws `X2DataError` if the property cannot be reached.
+* `getValue(record, [traceFunc])` - Given a record, gets value of the property, at which the pointer points. Returns `null` if no value. For absent array and map elements returns `undefined`. Throws `X2DataError` if the property cannot be reached.
+
+	Optionally, a trace callback function can be provided with the `getValue()` call. The trace callback function is called for every prefix pointer starting with the root pointer and ending with the leaf pointer itself. So, for example, for a pointer "/a/b/c" it will be called four times: first for the root pointer (empty string), then for "/a", then for "/a/b", and finally for "/a/b/c". The callback function receives the following arguments:
+
+	* `prefixPtr` - The current prefix pointer (instance of `PropertyPointer`).
+
+	* `value` - The value in the record for the current prefix pointer.
+
+	* `prefixDepth` - Integer number representing the prefix depth. For the last call, it is zero. For the call before the last it is one, and so on. The first call (the one with the root prefix pointer), therefore, gets the number of tokens in the pointer.
 
 * `addValue(record, value)` - Adds value to the property, at which the pointer points in the given record. If the pointer points at an array element, the value is inserted into the array at the specified by the pointer location. In all other cases, any existing value is simply replaced.
 
