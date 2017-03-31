@@ -13,7 +13,7 @@
  *
  * @function module:x2node-patch.RecordPatchHandlers#onInsert
  * @param {string} op The operation, which can be "add", "move" or "copy".
- * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
+ * @param {module:x2node-patch~PropertyPointer} ptr Path pointer.
  * @param {*} value The value inserted (may be <code>null</code> for a simple
  * value array or map element, but never <code>undefined</code>).
  */
@@ -23,7 +23,7 @@
  *
  * @function module:x2node-patch.RecordPatchHandlers#onRemove
  * @param {string} op The operation, which can be "remove" or "move".
- * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
+ * @param {module:x2node-patch~PropertyPointer} ptr Path pointer.
  */
 /**
  * Called when a value is set to a property as a result of an "add", "remove",
@@ -32,7 +32,7 @@
  * @function module:x2node-patch.RecordPatchHandlers#onSet
  * @param {string} op The operation, which can be "add", "remove", "replace",
  * "move" or "copy".
- * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
+ * @param {module:x2node-patch~PropertyPointer} ptr Path pointer.
  * @param {*} value The new value (may be <code>null</code> but never
  * <code>undefined</code>).
  */
@@ -41,7 +41,7 @@
  * operation.
  *
  * @function module:x2node-patch.RecordPatchHandlers#onTest
- * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
+ * @param {module:x2node-patch~PropertyPointer} ptr Path pointer.
  * @param {*} value The value tested (may be <code>null</code> but never
  * <code>undefined</code>).
  * @param {boolean} passed <code>true</code> if the test operation passed.
