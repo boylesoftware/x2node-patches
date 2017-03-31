@@ -2,53 +2,42 @@
  * Interface for record patch handlers objects that can be invoked when patch
  * operations are applied to a record. Each method is optional and even if
  * present is called only if the patch detects that the operation changes the
- * current record.
+ * current record (except the "test" operation).
  *
  * @interface RecordPatchHandlers
  * @memberof module:x2node-patch
  */
 /**
- * Called when an "add" operation is applied.
+ * Called when a value is added to an array or map property as a result of an
+ * "add", "move" or "copy" patch operation.
  *
- * @function module:x2node-patch.RecordPatchHandlers#onAdd
+ * @function module:x2node-patch.RecordPatchHandlers#onInsert
+ * @param {string} op The operation, which can be "add", "move" or "copy".
  * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
- * @param {*} value The value added (may be <code>null</code> but never
- * <code>undefined</code>).
+ * @param {*} value The value inserted (may be <code>null</code> for a simple
+ * value array or map element, but never <code>undefined</code>).
  */
 /**
- * Called when a "remove" operation is applied.
+ * Called when a value is removed from an array or map property as a result of a
+ * "remove" or "move" patch operation.
  *
  * @function module:x2node-patch.RecordPatchHandlers#onRemove
+ * @param {string} op The operation, which can be "remove" or "move".
  * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
  */
 /**
- * Called when a "replace" operation is applied.
+ * Called when a value is set to a property as a result of an "add", "replace" or
+ * "copy" patch operation.
  *
- * @function module:x2node-patch.RecordPatchHandlers#onReplace
+ * @function module:x2node-patch.RecordPatchHandlers#onSet
+ * @param {string} op The operation, which can be "add", "replace" or "copy".
  * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
  * @param {*} value The new value (may be <code>null</code> but never
  * <code>undefined</code>).
  */
 /**
- * Called when a "move" operation is applied.
- *
- * @function module:x2node-patch.RecordPatchHandlers#onMove
- * @param {module:x2node-patch~PropertyPointer} pathPtr Target pointer.
- * @param {module:x2node-patch~PropertyPointer} fromPtr "From" pointer.
- * @param {*} value The value moved (may be <code>null</code> but never
- * <code>undefined</code>).
- */
-/**
- * Called when a "copy" operation is applied.
- *
- * @function module:x2node-patch.RecordPatchHandlers#onCopy
- * @param {module:x2node-patch~PropertyPointer} pathPtr Target pointer.
- * @param {module:x2node-patch~PropertyPointer} fromPtr "From" pointer.
- * @param {*} value The value copied (may be <code>null</code> but never
- * <code>undefined</code>).
- */
-/**
- * Called when a "test" operation is applied.
+ * Called when a property value is tested as a result of a "test" patch
+ * operation.
  *
  * @function module:x2node-patch.RecordPatchHandlers#onTest
  * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
