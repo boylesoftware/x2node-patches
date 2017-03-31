@@ -5,6 +5,7 @@ This is module is an implementation of JSON Patch ([RFC 6902](https://tools.ietf
 ## Table of Contents
 
 * [Property Pointers](#property-pointers)
+* [Record Patch](#record-patch)
 
 ## Property Pointers
 
@@ -53,3 +54,56 @@ The returned `PropertyPointer` object exposes the following properties and metho
 * `toString()` - Get string representation of the pointer as specified in RFC 6901.
 
 Note, that `addValue()`, `replaceValue()` and `removeValue()` methods are not allowed on a root pointer. Also, `addValue()` and `replaceValue()` methods cannot take `undefined` for the value to set and `null` is not allowed for nested object array and map elements. Beyond that, the methods make no checks for the value type whether it matches the property or not.
+
+## Record Patch
+
+The second piece of the module is an implementation of RFC 6902 JSON Patch specific to the X2 Framework's records notion. A patch is represented by a `RecordPatch` class object and is parsed from the JSON using module's `buildJSONPatch()` function. For example:
+
+```javascript
+const records = require('x2node-records');
+const patch = require('x2node-patch');
+
+const recordTypes = records.buildLibrary({
+	...
+});
+
+// parse the patch
+const p = patch.buildJSONPatch(recordTypes, 'Order', [
+	{ "op": "test", "path": "/a/b/c", "value": "foo" },
+	{ "op": "remove", "path": "/a/b/c" },
+	{ "op": "add", "path": "/a/b/c", "value": [ "foo", "bar" ] },
+	{ "op": "replace", "path": "/a/b/c", "value": 42 },
+	{ "op": "move", "from": "/a/b/c", "path": "/a/b/d" },
+	{ "op": "copy", "from": "/a/b/d", "path": "/a/b/e" }
+]);
+
+// apply patch to a record
+const order = ...
+p.apply(order);
+```
+
+The `buildJSONPatch()` function takes the following arguments:
+
+* `recordTypes` - A `RecordTypesLibrary` instance.
+
+* `recordTypeName` - Name of the record type, against records of which the patch is going to be applied.
+
+* `patch` - The JSON patch specification according to the RFC 6902 specification.
+
+If anything goes wrong with the provided arguments, the function throws an `X2UsageError`. Otherwise, it returns a `RecordPatch` instance, which exposes the following properties and methods:
+
+* `involvedPropPaths` - A `Set` of paths (in dot notation) of all record properties involved (read, erased and updated) in the patch.
+
+* `apply(record, [handlers])` - Applies the patch to the specified record. If the record is not good for the patch (e.g. some properties are missing that are expected to be present by the patch specification), the method throws an `X2DataError`. Otherwise, it makes the necessary modifications to the provided record object and returns either `true` if all good, or `false` if a "test" patch operation fails. Note, that the method does not provide transactionality, so in case of an error or a failed "test" operation the provided record object may be left partially modified.
+
+Optionally, the `apply()` method can be provided with a `handlers` object that implements `RecordPatchHandlers` interface. The interface methods on the object, if present, are invoked during the patch application to notify it about the changes that the patch is making to the record as it goes through the patch operations. The methods are:
+
+* `onInsert(op, pathPtr, value)` - Called when a value is added to an array or map property as a result of an "add", "move" or "copy" patch operation. The `op` argument is the operation, which can be "add", "move" or "copy". The `pathPtr` is a `PropertyPointer` pointing at the array or map element, and the `value` is the value being inserted. The value may be `null` for a simple (non nested object) value array or map element, but never `undefined`.
+
+* `onRemove(op, pathPtr)` - Called when a value is removed from an array or map property as a result of a "remove" or "move" patch operation. The `op` argument is the operation, which can be "remove" or "move". The `pathPtr` is a `PropertyPointer` pointing at the array or map element.
+
+* `onSet(op, pathPtr, value)` - Called when a value is set to a property (or an array or a map element is replaced) as a result of an "add", "remove" (the `value` is `null`), "replace", "move" or "copy" patch operation. The `op` argument is the operation, which can be "add", "remove", "replace", "move" or "copy". The `pathPtr` is a `PropertyPointer`, and the `value` is the value being set. The value may be `null` but never `undefined`.
+
+* `onTest(pathPtr, value, passed)` - Called when a property value is tested as a result of a "test" patch operation. The `pathPtr` is a `PropertyPointer` pointing at the property, `value` is the value, against which it is tested and `passed` is `true` if the test was successful.
+
+The methods are called only if present on the provided `handlers` object and only if the record is actually modified as a result of the operation (except the `onTest()`, which does not modify the record and is called always, if present).

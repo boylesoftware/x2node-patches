@@ -26,11 +26,12 @@
  * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
  */
 /**
- * Called when a value is set to a property as a result of an "add", "replace" or
- * "copy" patch operation.
+ * Called when a value is set to a property as a result of an "add", "remove",
+ * "replace", "move" or "copy" patch operation.
  *
  * @function module:x2node-patch.RecordPatchHandlers#onSet
- * @param {string} op The operation, which can be "add", "replace" or "copy".
+ * @param {string} op The operation, which can be "add", "remove", "replace",
+ * "move" or "copy".
  * @param {module:x2node-patch~PropertyPointer} pathPtr Path pointer.
  * @param {*} value The new value (may be <code>null</code> but never
  * <code>undefined</code>).
