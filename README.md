@@ -65,6 +65,8 @@ The returned `PropertyPointer` object exposes the following properties and metho
 
 Note, that `addValue()`, `replaceValue()` and `removeValue()` methods are not allowed on a root pointer. Also, `addValue()` and `replaceValue()` methods cannot take `undefined` for the value to set and `null` is not allowed for nested object array and map elements. Beyond that, the methods make no checks for the value type whether it matches the property or not.
 
+The three record modification methods `addValue()`, `replaceValue()` and `removeValue()` all return the previous value as `getValue()` would return before modifying the record.
+
 ## Record Patch
 
 The second piece of the module is an implementation of RFC 6902 JSON Patch specific to the X2 Framework's records notion. A patch is represented by a `RecordPatch` class object and is parsed from the JSON using module's `buildJSONPatch()` function. For example:
@@ -108,11 +110,11 @@ If anything goes wrong with the provided arguments, the function throws an `X2Us
 
 Optionally, the `apply()` method can be provided with a `handlers` object that implements `RecordPatchHandlers` interface. The interface methods on the object, if present, are invoked during the patch application to notify it about the changes that the patch is making to the record as it goes through the patch operations. The methods are:
 
-* `onInsert(op, ptr, value)` - Called when a value is added to an array or map property as a result of an "add", "move" or "copy" patch operation. The `op` argument is the operation, which can be "add", "move" or "copy". The `ptr` is a `PropertyPointer` pointing at the array or map element, and the `value` is the value being inserted. The value may be `null` for a simple (non nested object) value array or map element, but never `undefined`.
+* `onInsert(op, ptr, newValue, oldValue)` - Called when a value is added to an array or map property as a result of an "add", "move" or "copy" patch operation. The `op` argument is the operation, which can be "add", "move" or "copy". The `ptr` is a `PropertyPointer` pointing at the array or map element, and the `newValue` is the value being inserted. The value may be `null` for a simple (non nested object) value array or map element, but never `undefined`. The `oldValue` is the previous value at the pointer location as would be returned by the pointer's `getValue()` method.
 
-* `onRemove(op, ptr)` - Called when a value is removed from an array or map property as a result of a "remove" or "move" patch operation. The `op` argument is the operation, which can be "remove" or "move". The `ptr` is a `PropertyPointer` pointing at the array or map element.
+* `onRemove(op, ptr, oldValue)` - Called when a value is removed from an array or map property as a result of a "remove" or "move" patch operation. The `op` argument is the operation, which can be "remove" or "move". The `ptr` is a `PropertyPointer` pointing at the array or map element. The `oldValue` is the previous value at the pointer location.
 
-* `onSet(op, ptr, value)` - Called when a value is set to a property (or an array or a map element is replaced) as a result of an "add", "remove" (the `value` is `null`), "replace", "move" or "copy" patch operation. The `op` argument is the operation, which can be "add", "remove", "replace", "move" or "copy". The `ptr` is a `PropertyPointer`, and the `value` is the value being set. The value may be `null` but never `undefined`.
+* `onSet(op, ptr, newValue, oldValue)` - Called when a value is set to a property (or an array or a map element is replaced) as a result of an "add", "remove" (the `newValue` is `null`), "replace", "move" or "copy" patch operation. The `op` argument is the operation, which can be "add", "remove", "replace", "move" or "copy". The `ptr` is a `PropertyPointer`, and the `value` is the value being set. The value may be `null` but never `undefined`. The `oldValue` is the previous value at the pointer location.
 
 * `onTest(ptr, value, passed)` - Called when a property value is tested as a result of a "test" patch operation. The `ptr` is a `PropertyPointer` pointing at the property, `value` is the value, against which it is tested and `passed` is `true` if the test was successful.
 
