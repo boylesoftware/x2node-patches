@@ -45,6 +45,8 @@ The returned `PropertyPointer` object exposes the following properties and metho
 
 * `collectionElementIndex` - For a collection element pointer (`collectionElement` is `true`), the element index, which, for an array element, is a number or a dash ("-") and for a map element&mdash;the map key string.
 
+* `createChildPointer(pointerToken)` - Creates and returns immediate child pointer of this pointer. This is faster than parsing the pointer from string notation as it does not have to re-parse the prefix.
+
 * `getValue(record, [traceFunc])` - Given a record, gets value of the property, at which the pointer points. Returns `null` if no value. For absent array and map elements returns `undefined`. Throws `X2DataError` if the property cannot be reached.
 
 	Optionally, a trace callback function can be provided with the `getValue()` call. The trace callback function is called for every prefix pointer starting with the root pointer and ending with the leaf pointer itself. So, for example, for a pointer "/a/b/c" it will be called four times: first for the root pointer (empty string), then for "/a", then for "/a/b", and finally for "/a/b/c". The callback function receives the following arguments:
