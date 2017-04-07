@@ -1,7 +1,7 @@
 /**
  * JSON Patch and JSON Pointer imlpementation module.
  *
- * @module x2node-patch
+ * @module x2node-patches
  * @requires module:x2node-common
  * @requires module:x2node-records
  */

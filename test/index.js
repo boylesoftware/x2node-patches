@@ -4,7 +4,7 @@ const expect = require('chai').expect;
 const common = require('x2node-common');
 const records = require('x2node-records');
 
-const patch = require('../index.js');
+const patches = require('../index.js');
 
 
 const TEST_LIB = {
@@ -62,7 +62,7 @@ const TEST_LIB = {
 };
 
 
-describe('x2node-patch Module', function() {
+describe('x2node-patches Module', function() {
 
 	const recordTypes = records.buildLibrary(TEST_LIB);
 	const recordTypeDesc = recordTypes.getRecordTypeDesc('Record1');
@@ -89,7 +89,7 @@ describe('x2node-patch Module', function() {
 				'/nestedObjMapProp/MYKEY/prop1'
 			];
 			for (let pointer of validPointers) {
-				expect(patch.parseJSONPointer(recordTypeDesc, pointer), pointer)
+				expect(patches.parseJSONPointer(recordTypeDesc, pointer), pointer)
 					.to.be.ok;
 			}
 		});
@@ -107,7 +107,7 @@ describe('x2node-patch Module', function() {
 				'/nestedObjMapProp/MYKEY/karamba'
 			];
 			for (let pointer of invalidPointers) {
-				expect(() => patch.parseJSONPointer(recordTypeDesc, pointer), pointer)
+				expect(() => patches.parseJSONPointer(recordTypeDesc, pointer), pointer)
 					.to.throw(common.X2UsageError);
 			}
 		});
@@ -176,7 +176,7 @@ describe('x2node-patch Module', function() {
 				[ '/nestedObjMapProp/key2/prop1', 'value2' ]
 			];
 			for (let pair of pointerValues) {
-				const ptr = patch.parseJSONPointer(recordTypeDesc, pair[0]);
+				const ptr = patches.parseJSONPointer(recordTypeDesc, pair[0]);
 				expect(ptr.getValue(record1), ptr.toString())
 					.to.be.equal(pair[1]);
 			}
@@ -195,7 +195,7 @@ describe('x2node-patch Module', function() {
 				[ '/nestedObjMapProp/missing', undefined ]
 			];
 			for (let pair of pointerValues) {
-				const ptr = patch.parseJSONPointer(recordTypeDesc, pair[0]);
+				const ptr = patches.parseJSONPointer(recordTypeDesc, pair[0]);
 				expect(ptr.getValue(record2), ptr.toString())
 					.to.be.equal(pair[1]);
 			}
@@ -206,7 +206,7 @@ describe('x2node-patch Module', function() {
 			record2.nestedObjArrayProp = null;
 			record2.nestedObjMapProp = null;
 			for (let pair of pointerValues) {
-				const ptr = patch.parseJSONPointer(recordTypeDesc, pair[0]);
+				const ptr = patches.parseJSONPointer(recordTypeDesc, pair[0]);
 				expect(ptr.getValue(record2), ptr.toString())
 					.to.be.equal(pair[1]);
 			}
@@ -221,7 +221,7 @@ describe('x2node-patch Module', function() {
 				[ '/nestedObjMapProp', {} ]
 			];
 			for (let pair of pointerValues) {
-				const ptr = patch.parseJSONPointer(recordTypeDesc, pair[0]);
+				const ptr = patches.parseJSONPointer(recordTypeDesc, pair[0]);
 				expect(ptr.getValue(record2), ptr.toString())
 					.to.be.deep.equal(pair[1]);
 			}
@@ -233,7 +233,7 @@ describe('x2node-patch Module', function() {
 				'/nestedObjMapProp/missing/prop1'
 			];
 			for (let pointer of pointers) {
-				const ptr = patch.parseJSONPointer(recordTypeDesc, pointer);
+				const ptr = patches.parseJSONPointer(recordTypeDesc, pointer);
 				expect(() => ptr.getValue(record1), ptr.toString())
 					.to.throw(common.X2DataError);
 			}
@@ -245,7 +245,7 @@ describe('x2node-patch Module', function() {
 				'/nestedObjMapProp/missing/prop1'
 			];
 			for (let pointer of pointers) {
-				const ptr = patch.parseJSONPointer(recordTypeDesc, pointer);
+				const ptr = patches.parseJSONPointer(recordTypeDesc, pointer);
 				expect(() => ptr.getValue(record2), ptr.toString())
 					.to.throw(common.X2DataError);
 			}
@@ -253,7 +253,7 @@ describe('x2node-patch Module', function() {
 			delete record2.nestedObjArrayProp;
 			delete record2.nestedObjMapProp;
 			for (let pointer of pointers) {
-				const ptr = patch.parseJSONPointer(recordTypeDesc, pointer);
+				const ptr = patches.parseJSONPointer(recordTypeDesc, pointer);
 				expect(() => ptr.getValue(record2), ptr.toString())
 					.to.throw(common.X2DataError);
 			}

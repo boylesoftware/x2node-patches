@@ -13,13 +13,13 @@ A JSON pointer against a record can be parsed into a `PropertyPointer` class obj
 
 ```javascript
 const records = require('x2node-records');
-const patch = require('x2node-patch');
+const patches = require('x2node-patches');
 
 const recordTypes = records.buildLibrary({
 	...
 });
 
-const ptr = patch.parseJSONPointer(
+const ptr = patches.parseJSONPointer(
 	recordTypes.getRecordTypeDesc('Order'), '/items/0/quantity');
 ```
 
@@ -75,14 +75,14 @@ The second piece of the module is an implementation of RFC 6902 JSON Patch speci
 
 ```javascript
 const records = require('x2node-records');
-const patch = require('x2node-patch');
+const patches = require('x2node-patches');
 
 const recordTypes = records.buildLibrary({
 	...
 });
 
 // parse the patch
-const p = patch.buildJSONPatch(recordTypes, 'Order', [
+const patch = patches.buildJSONPatch(recordTypes, 'Order', [
 	{ "op": "test", "path": "/a/b/c", "value": "foo" },
 	{ "op": "remove", "path": "/a/b/c" },
 	{ "op": "add", "path": "/a/b/c", "value": [ "foo", "bar" ] },
@@ -93,7 +93,7 @@ const p = patch.buildJSONPatch(recordTypes, 'Order', [
 
 // apply patch to a record
 const order = ...
-p.apply(order);
+patch.apply(order);
 ```
 
 The `buildJSONPatch()` function takes the following arguments:
