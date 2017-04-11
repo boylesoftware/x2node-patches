@@ -1,18 +1,15 @@
 /**
- * JSON Patch and JSON Pointer imlpementation module.
+ * JSON Patch imlpementation module.
  *
  * @module x2node-patches
  * @requires module:x2node-common
  * @requires module:x2node-records
+ * @requires module:x2node-pointers
  */
 'use strict';
 
-const propertyPointerParser = require('./lib/property-pointer-parser.js');
 const recordPatchBuilder = require('./lib/record-patch-builder.js');
 
 
-// export the JSON patch builder function
-exports.buildJSONPatch = recordPatchBuilder.build;
-
-// export the JSON pointer parser function
-exports.parseJSONPointer = propertyPointerParser.parse;
+// export the builder function
+exports.build = recordPatchBuilder.build;
