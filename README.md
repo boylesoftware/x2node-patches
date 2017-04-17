@@ -42,7 +42,7 @@ The `build()` function takes the following arguments:
 
 * `patch` - The JSON patch specification according to the RFC 6902 specification.
 
-If anything goes wrong with the provided arguments, the function throws an `X2UsageError`. Otherwise, it returns a `RecordPatch` instance, which exposes the following properties and methods:
+If the record type is invalid, an `X2UsageError` is thrown. If anything is wrong with the provided patch specification, the function throws an `X2SyntaxError`. Otherwise, it returns a `RecordPatch` instance, which exposes the following properties and methods:
 
 * `involvedPropPaths` - A `Set` of paths (in dot notation) of all record properties involved (read, erased and updated) in the patch.
 
