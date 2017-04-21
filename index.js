@@ -11,5 +11,6 @@
 const recordPatchBuilder = require('./lib/record-patch-builder.js');
 
 
-// export the builder function
+// export the builder functions
 exports.build = recordPatchBuilder.build;
+exports.buildMerge = recordPatchBuilder.buildMerge;
