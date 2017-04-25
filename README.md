@@ -2,6 +2,8 @@
 
 This module is an implementation of _JSON Patch_ ([RFC 6902](https://tools.ietf.org/html/rfc6902)) for use with the record objects as defined by the X2 Framework's [x2node-records](https://www.npmjs.com/package/x2node-records) module. Given patch specification JSON, the module builds a patch object that can be applied to records of the specified type.
 
+The module also supports _Merge Patch_ specification ([RFC 7396](https://tools.ietf.org/html/rfc7396)).
+
 ## Usage
 
 A patch is represented by a `RecordPatch` class object and is parsed from the JSON using module's `build()` function. For example:
@@ -46,6 +48,8 @@ If the record type is invalid, an `X2UsageError` is thrown. If anything is wrong
 
 * `involvedPropPaths` - A `Set` of paths (in dot notation) of all record properties involved (read, erased and updated) in the patch.
 
+* `updatedPropPaths` - A `Set` of paths (in dot notaion) of those properties that may be updated by the patch, including paths of all parent properties of updated nested object properties. It will exclude properties that are only involved in "test" operations or as "from" properties of "copy" operations. Note that whether the patch actually changes the property value will depend on the current value in the supplied record. Naturally, if the value is the same, it won't change even though the property is still listed in the `updatedPropPaths`.
+
 * `apply(record, [handlers])` - Applies the patch to the specified record. If the record is not good for the patch (e.g. some properties are missing that are expected to be present by the patch specification), the method throws an `X2DataError`. Otherwise, it makes the necessary modifications to the provided record object and returns either `true` if all good, or `false` if a "test" patch operation fails. Note, that the method does not provide transactionality, so in case of an error or a failed "test" operation the provided record object may be left partially modified.
 
 Optionally, the `apply()` method can be provided with a `handlers` object that implements `RecordPatchHandlers` interface. The interface methods on the object, if present, are invoked during the patch application to notify it about the changes that the patch is making to the record as it goes through the patch operations. The methods are:
@@ -59,3 +63,14 @@ Optionally, the `apply()` method can be provided with a `handlers` object that i
 * `onTest(ptr, value, passed)` - Called when a property value is tested as a result of a "test" patch operation. The `ptr` is a `RecordElementPointer` pointing at the property, `value` is the value, against which it is tested and `passed` is `true` if the test was successful.
 
 The methods are called only if present on the provided `handlers` object and only if the record is actually modified as a result of the operation (except the `onTest()`, which does not modify the record and is called always, if present).
+
+Alternatively, instead of _JSON Patch_ the patch may be specified using _Merge Patch_ format:
+
+```javascript
+const patch = patches.buildMerge(recordTypes, 'Order', {
+	quantity: 10,
+	status: 'ADJUSTED'
+});
+```
+
+The only different is that `buildMerge()` function is used instead of the regular `build()`. The resulting patch object follows the same specification as described above.
