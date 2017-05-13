@@ -4,6 +4,8 @@ This module is an implementation of _JSON Patch_ ([RFC 6902](https://tools.ietf.
 
 The module also supports _Merge Patch_ specification ([RFC 7396](https://tools.ietf.org/html/rfc7396)).
 
+See module's [API Reference Documentation](https://boylesoftware.github.io/x2node-api-reference/module-x2node-patches.html).
+
 ## Usage
 
 A patch is represented by a `RecordPatch` class object and is parsed from the JSON using module's `build()` function. For example:
