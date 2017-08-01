@@ -15,22 +15,22 @@ const records = require('x2node-records');
 const patches = require('x2node-patches');
 
 const recordTypes = records.buildLibrary({
-	recordTypes: {
-		'Order': {
-			...
-		},
-		...
-	}
+    recordTypes: {
+        'Order': {
+            ...
+        },
+        ...
+    }
 });
 
 // build the patch
 const patch = patches.build(recordTypes, 'Order', [
-	{ "op": "test", "path": "/a/b/c", "value": "foo" },
-	{ "op": "remove", "path": "/a/b/c" },
-	{ "op": "add", "path": "/a/b/c", "value": [ "foo", "bar" ] },
-	{ "op": "replace", "path": "/a/b/c", "value": 42 },
-	{ "op": "move", "from": "/a/b/c", "path": "/a/b/d" },
-	{ "op": "copy", "from": "/a/b/d", "path": "/a/b/e" }
+    { "op": "test", "path": "/a/b/c", "value": "foo" },
+    { "op": "remove", "path": "/a/b/c" },
+    { "op": "add", "path": "/a/b/c", "value": [ "foo", "bar" ] },
+    { "op": "replace", "path": "/a/b/c", "value": 42 },
+    { "op": "move", "from": "/a/b/c", "path": "/a/b/d" },
+    { "op": "copy", "from": "/a/b/d", "path": "/a/b/e" }
 ]);
 
 // apply patch to a record
@@ -70,8 +70,8 @@ Alternatively, instead of _JSON Patch_ the patch may be specified using _Merge P
 
 ```javascript
 const patch = patches.buildMerge(recordTypes, 'Order', {
-	quantity: 10,
-	status: 'ADJUSTED'
+    quantity: 10,
+    status: 'ADJUSTED'
 });
 ```
 
