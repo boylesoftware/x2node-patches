@@ -1,6 +1,6 @@
 {
   "name": "x2node-patches",
-  "version": "1.1.5",
+  "version": "1.1.6-alpha.0",
   "description": "JSON Patch implementation.",
   "keywords": [
     "json-patch",
