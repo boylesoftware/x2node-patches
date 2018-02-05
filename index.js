@@ -9,8 +9,10 @@
 'use strict';
 
 const recordPatchBuilder = require('./lib/record-patch-builder.js');
+const differ = require('./lib/differ.js');
 
 
 // export the builder functions
 exports.build = recordPatchBuilder.build;
 exports.buildMerge = recordPatchBuilder.buildMerge;
+exports.fromDiff = differ.fromDiff;
