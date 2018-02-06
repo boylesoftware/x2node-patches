@@ -66,6 +66,8 @@ Optionally, the `apply()` method can be provided with a `handlers` object that i
 
 The methods are called only if present on the provided `handlers` object and only if the record is actually modified as a result of the operation (except the `onTest()`, which does not modify the record and is called always, if present).
 
+## Merge Patch
+
 Alternatively, instead of _JSON Patch_ the patch may be specified using _Merge Patch_ format:
 
 ```javascript
@@ -75,4 +77,23 @@ const patch = patches.buildMerge(recordTypes, 'Order', {
 });
 ```
 
-The only different is that `buildMerge()` function is used instead of the regular `build()`. The resulting patch object follows the same specification as described above.
+The only difference is that `buildMerge()` function is used instead of the regular `build()`. The resulting patch object follows the same specification as described above.
+
+## Diffing Records
+
+Another option is to build JSON patch specification by analyzing differences between two records. The module provides `fromDiff()` function for that:
+
+```javascript
+const patchSpec = patches.fromDiff(recordTypes, 'Order', orignalOrder, updatedOrder);
+
+const patch = patches.build(recordTypes, 'Order', patchSpec);
+```
+
+A few notes about `fromDiff()` function:
+
+* The top record id property is allowed to be missing in the provided updated record (if present, must be the same).
+* View, calculated and record meta-info properties are ignored.
+* Unrecognized properties in the updated record are not allowed.
+* The resulting patch specification may still be invalid. For example, `fromDiff()` does not check if properties are modifiable or optional. Attempt to build a patch from the resulting specification will reveal the error.
+* The array properties are assumed to be sorted using the same criteria in both the original and the updated records.
+* Elements of nested object arrays must have id property. All elements in the original record must have an id value. Elements in the updated record that do not have the id or have an id that is not found in the original array are assumed to be new and are inserted.
