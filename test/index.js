@@ -132,6 +132,25 @@ describe('x2node-patches Module', function() {
 					{ id: 4, prop1: 'D' },
 					{ id: 5, prop1: 'E' },
 					{ id: 0, prop1: '2' }
+				],
+				[
+					{ id: 0, prop1: '0' },
+					{ id: 0, prop1: '1' },
+					{ id: 3, prop1: 'X' },
+					{ id: 4, prop1: 'D' },
+					{ id: 0, prop1: '2' }
+				],
+				[
+					{ id: 3, prop1: 'X' }
+				],
+				[
+					{ id: 0, prop1: '0' },
+					{ id: 1, prop1: 'X' },
+					{ id: 2, prop1: 'B' },
+					{ id: 3, prop1: 'C' },
+					{ id: 4, prop1: 'D' },
+					{ id: 5, prop1: 'E' },
+					{ id: 0, prop1: '1' }
 				]
 			].forEach(a => {
 				const recNew = deepCopy(rec);
