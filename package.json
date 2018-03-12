@@ -1,6 +1,6 @@
 {
   "name": "x2node-patches",
-  "version": "1.2.2",
+  "version": "1.2.3-alpha.0",
   "description": "JSON Patch implementation.",
   "keywords": [
     "json-patch",
@@ -25,16 +25,16 @@
   },
   "homepage": "https://github.com/boylesoftware/x2node-patches#readme",
   "engines": {
-    "node": ">=4.3.2"
+    "node": ">=6.10.3"
   },
   "dependencies": {
-    "x2node-common": "^1.3.5",
-    "x2node-pointers": "^1.2.6",
-    "x2node-records": "^2.3.0"
+    "x2node-common": "^1.3.6",
+    "x2node-pointers": "^1.2.7",
+    "x2node-records": "^2.3.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "eslint": "^4.17.0",
-    "mocha": "^5.0.0"
+    "eslint": "^4.18.2",
+    "mocha": "^5.0.4"
   }
 }
